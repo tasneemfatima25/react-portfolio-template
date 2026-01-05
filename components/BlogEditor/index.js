@@ -19,26 +19,24 @@ const BlogEditor = ({ post, close, refresh }) => {
   });
 
   const savePost = async () => {
-    if (process.env.NODE_ENV === "development") {
-      await fetch("/api/blog/edit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          slug: post.slug,
-          content: blogContent,
-          variables: blogVariables,
-        }),
-      }).then((data) => {
-        if (data.status === 200) {
-          close();
-          refresh();
-        }
-      });
-    } else {
-      alert("This thing only works in development mode.");
-    }
+    await fetch("/api/blog/edit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        slug: post.slug,
+        content: blogContent,
+        variables: blogVariables,
+      }),
+    }).then((data) => {
+      if (data.status === 200) {
+        close();
+        refresh();
+      }
+    }).catch((error) => {
+      console.error("Error saving post:", error);
+    });
   };
 
   return (

@@ -3,7 +3,7 @@ import { join } from "path";
 
 export default function handler(req, res) {
   const portfolioData = join(process.cwd(), "/data/portfolio.json");
-  if (process.env.NODE_ENV === "development") {
+  // if (process.env.NODE_ENV === "development") {
     if (req.method === "POST") {
       fs.writeFileSync(
         portfolioData,
@@ -17,4 +17,4 @@ export default function handler(req, res) {
         .json({ name: "This route works in development mode only" });
     }
   }
-}
+// }

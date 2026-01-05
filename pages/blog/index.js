@@ -29,36 +29,32 @@ const Blog = ({ posts }) => {
   }, []);
 
   const createBlog = () => {
-    if (process.env.NODE_ENV === "development") {
-      fetch("/api/blog", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then(() => {
-        router.reload(window.location.pathname);
-      });
-    } else {
-      alert("This thing only works in development mode.");
-    }
+    fetch("/api/blog", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }).then(() => {
+      router.reload(window.location.pathname);
+    }).catch((error) => {
+      console.error("Error creating blog:", error);
+    });
   };
 
   const deleteBlog = (slug) => {
-    if (process.env.NODE_ENV === "development") {
-      fetch("/api/blog", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          slug,
-        }),
-      }).then(() => {
-        router.reload(window.location.pathname);
-      });
-    } else {
-      alert("This thing only works in development mode.");
-    }
+    fetch("/api/blog", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        slug,
+      }),
+    }).then(() => {
+      router.reload(window.location.pathname);
+    }).catch((error) => {
+      console.error("Error deleting blog:", error);
+    });
   };
   return (
     showBlog.current && (
@@ -98,7 +94,7 @@ const Blog = ({ posts }) => {
                     <span className="text-sm mt-5 opacity-25">
                       {ISOToDate(post.date)}
                     </span>
-                    {process.env.NODE_ENV === "development" && mounted && (
+                    {mounted && (
                       <div className="absolute top-0 right-0">
                         <Button
                           onClick={(e) => {
@@ -116,7 +112,7 @@ const Blog = ({ posts }) => {
             </div>
           </div>
         </div>
-        {process.env.NODE_ENV === "development" && mounted && (
+        {mounted && (
           <div className="fixed bottom-6 right-6">
             <Button onClick={createBlog} type={"primary"}>
               Add New Post +{" "}

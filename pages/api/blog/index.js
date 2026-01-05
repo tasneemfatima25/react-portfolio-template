@@ -6,7 +6,7 @@ import { getRandomImage } from "../../../utils";
 
 export default function handler(req, res) {
   const postsfolder = join(process.cwd(), `/_posts/${uuidv4()}.md`);
-  if (process.env.NODE_ENV === "development") {
+  // if (process.env.NODE_ENV === "development") {
     if (req.method === "POST") {
       const data = matter.stringify("# New Blog", {
         date: new Date().toISOString(),
@@ -24,7 +24,7 @@ export default function handler(req, res) {
       fs.unlinkSync(deleteFile);
       res.status(200).json({ status: "DONE" });
     }
-  } else {
-    res.status(200).json({ name: "This route works in development mode only" });
-  }
+  // } else {
+  //   res.status(200).json({ name: "This route works in development mode only" });
+  // }
 }
