@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "../components/Button";
 import Header from "../components/Header";
 import { v4 as uuidv4 } from "uuid";
@@ -13,6 +13,29 @@ const Edit = () => {
   const [data, setData] = useState(yourData);
   const [currentTabs, setCurrentTabs] = useState("HEADER");
   const { theme } = useTheme();
+
+  // Load data from database on mount
+  useEffect(() => {
+    fetch("/api/portfolio")
+      .then(res => res.json())
+      .then(dbData => {
+        // If database has data, use it; otherwise initialize with local data
+        if (dbData && Object.keys(dbData).length > 1) {
+          setData(dbData);
+        } else {
+          // Database is empty, save local data to it
+          fetch("/api/portfolio", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(yourData),
+          });
+        }
+      })
+      .catch(() => {
+        // If API fails, continue with local data
+        console.log("Using local data");
+      });
+  }, []);
 
   const saveData = () => {
     fetch("/api/portfolio", {
