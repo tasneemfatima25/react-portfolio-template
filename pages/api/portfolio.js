@@ -1,19 +1,12 @@
-import clientPromise from "../../lib/mongodb";
+import { kv } from "@vercel/kv";
 
 export default async function handler(req, res) {
   try {
-    const client = await clientPromise;
-    const db = client.db("portfolio");
-
     if (req.method === "POST") {
-      const result = await db.collection("data").updateOne(
-        { type: "portfolio" },
-        { $set: { ...req.body, type: "portfolio", updatedAt: new Date() } },
-        { upsert: true }
-      );
-      res.status(200).json({ message: "Portfolio data saved successfully", result });
+      await kv.set("portfolio", req.body);
+      res.status(200).json({ message: "Portfolio data saved successfully" });
     } else if (req.method === "GET") {
-      const data = await db.collection("data").findOne({ type: "portfolio" });
+      const data = await kv.get("portfolio");
       res.status(200).json(data || {});
     } else {
       res.status(405).json({ error: "Method not allowed" });
