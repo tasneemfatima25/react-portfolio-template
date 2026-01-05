@@ -1,22 +1,25 @@
-import fs from "fs";
-import { join } from "path";
+import clientPromise from "../../lib/mongodb";
 
-export default function handler(req, res) {
-  const portfolioData = join(process.cwd(), "/data/portfolio.json");
+export default async function handler(req, res) {
+  try {
+    const client = await clientPromise;
+    const db = client.db("portfolio");
 
-  if (req.method === "POST") {
-    if (process.env.NODE_ENV === "development") {
-      try {
-        fs.writeFileSync(portfolioData, JSON.stringify(req.body, null, 2), "utf-8");
-        res.status(200).json({ message: "Portfolio data saved successfully" });
-      } catch (error) {
-        res.status(500).json({ error: "Failed to save portfolio data" });
-      }
+    if (req.method === "POST") {
+      const result = await db.collection("data").updateOne(
+        { type: "portfolio" },
+        { $set: { ...req.body, type: "portfolio", updatedAt: new Date() } },
+        { upsert: true }
+      );
+      res.status(200).json({ message: "Portfolio data saved successfully", result });
+    } else if (req.method === "GET") {
+      const data = await db.collection("data").findOne({ type: "portfolio" });
+      res.status(200).json(data || {});
     } else {
-      // Production mein API call successful hogi but file write nahi hogi
-      res.status(200).json({ message: "Changes saved (deploy to apply)" });
+      res.status(405).json({ error: "Method not allowed" });
     }
-  } else {
-    res.status(405).json({ error: "Method not allowed" });
+  } catch (error) {
+    console.error("Database error:", error);
+    res.status(500).json({ error: "Database error", details: error.message });
   }
 }
