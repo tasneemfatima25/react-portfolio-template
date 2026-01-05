@@ -141,11 +141,11 @@ export default function Home({ data = defaultData }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ req }) {
   try {
-    const baseUrl = process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : 'http://localhost:3003';
+    // Use absolute URL in production, relative in development
+    const protocol = req.headers.host?.includes('localhost') ? 'http' : 'https';
+    const baseUrl = `${protocol}://${req.headers.host}`;
 
     const res = await fetch(`${baseUrl}/api/portfolio`);
     const data = await res.json();
@@ -158,6 +158,7 @@ export async function getServerSideProps() {
     console.log('Using default data:', error.message);
   }
 
-  // Fallback to default data
-  return { props: {} };
+  // Fallback to default data from local file
+  const defaultData = await import('../data/portfolio.json');
+  return { props: { data: defaultData.default } };
 }
