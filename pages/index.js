@@ -12,9 +12,9 @@ import Link from "next/link";
 import Cursor from "../components/Cursor";
 
 // Local Data
-import data from "../data/portfolio.json";
+import defaultData from "../data/portfolio.json";
 
-export default function Home() {
+export default function Home({ data = defaultData }) {
   // Ref
   const workRef = useRef();
   const aboutRef = useRef();
@@ -139,4 +139,25 @@ export default function Home() {
       </div>
     </div>
   );
+}
+
+export async function getServerSideProps() {
+  try {
+    const baseUrl = process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : 'http://localhost:3003';
+
+    const res = await fetch(`${baseUrl}/api/portfolio`);
+    const data = await res.json();
+
+    // If database has data, use it; otherwise use default
+    if (data && Object.keys(data).length > 1) {
+      return { props: { data } };
+    }
+  } catch (error) {
+    console.log('Using default data:', error.message);
+  }
+
+  // Fallback to default data
+  return { props: {} };
 }
