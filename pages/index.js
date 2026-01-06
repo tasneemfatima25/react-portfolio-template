@@ -1,4 +1,5 @@
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import Header from "../components/Header";
 import ServiceCard from "../components/ServiceCard";
 import Socials from "../components/Socials";
@@ -11,7 +12,10 @@ import Button from "../components/Button";
 import Link from "next/link";
 import Cursor from "../components/Cursor";
 
-export default function Home({ data }) {
+export default function Home({ data: initialData }) {
+  const router = useRouter();
+  const [data, setData] = useState(initialData);
+
   // Ref
   const workRef = useRef();
   const aboutRef = useRef();
@@ -19,6 +23,31 @@ export default function Home({ data }) {
   const textTwo = useRef();
   const textThree = useRef();
   const textFour = useRef();
+
+  // Refresh data when returning from edit page
+  useEffect(() => {
+    const refreshData = () => {
+      fetch('/api/portfolio')
+        .then(res => res.json())
+        .then(newData => {
+          if (newData && Object.keys(newData).length > 1) {
+            setData(newData);
+          }
+        })
+        .catch(err => console.log('Error refreshing data:', err));
+    };
+
+    // Refresh on route change
+    router.events.on('routeChangeComplete', refreshData);
+
+    // Refresh on window focus
+    window.addEventListener('focus', refreshData);
+
+    return () => {
+      router.events.off('routeChangeComplete', refreshData);
+      window.removeEventListener('focus', refreshData);
+    };
+  }, [router]);
 
   // Handling Scroll
   const handleWorkScroll = () => {
