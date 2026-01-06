@@ -12,11 +12,6 @@ import Link from "next/link";
 import Cursor from "../components/Cursor";
 
 export default function Home({ data }) {
-  // If data is not available, show loading or handle gracefully
-  if (!data) {
-    return <div>Loading...</div>;
-  }
-
   // Ref
   const workRef = useRef();
   const aboutRef = useRef();
@@ -49,6 +44,11 @@ export default function Home({ data }) {
       { y: 0, x: 0, transform: "scale(1)" }
     );
   }, []);
+
+  // If data is not available, show loading or handle gracefully
+  if (!data) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className={`relative ${data.showCursor && "cursor-none"}`}>
