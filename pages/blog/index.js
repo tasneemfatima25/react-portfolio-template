@@ -11,27 +11,28 @@ const Blog = ({ posts, data }) => {
   const text = useRef();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
+  const showBlog = useRef(data?.showBlog);
+
+  useIsomorphicLayoutEffect(() => {
+    if (text.current) {
+      stagger(
+        [text.current],
+        { y: 40, x: -10, transform: "scale(0.95) skew(10deg)" },
+        { y: 0, x: 0, transform: "scale(1)" }
+      );
+      if (showBlog.current) stagger([text.current], { y: 30 }, { y: 0 });
+      else router.push("/");
+    }
+  }, [router]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Handle missing data
   if (!data) {
     return <div>Loading...</div>;
   }
-
-  const showBlog = useRef(data.showBlog);
-
-  useIsomorphicLayoutEffect(() => {
-    stagger(
-      [text.current],
-      { y: 40, x: -10, transform: "scale(0.95) skew(10deg)" },
-      { y: 0, x: 0, transform: "scale(1)" }
-    );
-    if (showBlog.current) stagger([text.current], { y: 30 }, { y: 0 });
-    else router.push("/");
-  }, []);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const createBlog = () => {
     fetch("/api/blog", {

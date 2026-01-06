@@ -12,19 +12,19 @@ const Resume = ({ data }) => {
   const theme = useTheme();
   const [mount, setMount] = useState(false);
 
+  useEffect(() => {
+    setMount(true);
+    if (data && !data.showResume) {
+      router.push("/");
+    }
+  }, [data, router]);
+
   // Handle missing data
   if (!data) {
     return <div>Loading...</div>;
   }
 
   const { name, showResume, resume } = data;
-
-  useEffect(() => {
-    setMount(true);
-    if (!showResume) {
-      router.push("/");
-    }
-  }, []);
   return (
     <>
       {/* {process.env.NODE_ENV === "development" && ( */}
