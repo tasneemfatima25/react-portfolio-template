@@ -155,14 +155,13 @@ export async function getServerSideProps({ req }) {
       };
     }
   } catch (error) {
-    console.log('Using default data:', error.message);
+    console.error('Error fetching portfolio data:', error.message);
   }
 
-  const defaultData = await import('../../data/portfolio.json');
   return {
     props: {
       posts: [...posts],
-      data: defaultData.default,
+      data: null,
     },
   };
 }

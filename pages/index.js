@@ -186,10 +186,9 @@ export async function getServerSideProps({ req }) {
       return { props: { data } };
     }
   } catch (error) {
-    console.log('Using default data:', error.message);
+    console.error('Error fetching portfolio data:', error.message);
+    return { props: { data: null } };
   }
 
-  // Fallback to default data from local file
-  const defaultData = await import('../data/portfolio.json');
-  return { props: { data: defaultData.default } };
+  return { props: { data: null } };
 }
