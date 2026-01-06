@@ -6,12 +6,9 @@ import ProjectResume from "../components/ProjectResume";
 import Socials from "../components/Socials";
 import Button from "../components/Button";
 import { useTheme } from "next-themes";
-// Data
-import { name, showResume } from "../data/portfolio.json";
-import { resume } from "../data/portfolio.json";
-import data from "../data/portfolio.json";
 
-const Resume = () => {
+const Resume = ({ data }) => {
+  const { name, showResume, resume } = data;
   const router = useRouter();
   const theme = useTheme();
   const [mount, setMount] = useState(false);
@@ -130,5 +127,24 @@ const Resume = () => {
     </>
   );
 };
+
+export async function getServerSideProps({ req }) {
+  try {
+    const protocol = req.headers.host?.includes('localhost') ? 'http' : 'https';
+    const baseUrl = `${protocol}://${req.headers.host}`;
+
+    const res = await fetch(`${baseUrl}/api/portfolio`);
+    const data = await res.json();
+
+    if (data && Object.keys(data).length > 1) {
+      return { props: { data } };
+    }
+  } catch (error) {
+    console.log('Using default data:', error.message);
+  }
+
+  const defaultData = await import('../data/portfolio.json');
+  return { props: { data: defaultData.default } };
+}
 
 export default Resume;

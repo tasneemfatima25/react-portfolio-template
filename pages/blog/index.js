@@ -5,10 +5,9 @@ import { stagger } from "../../animations";
 import Button from "../../components/Button";
 import Cursor from "../../components/Cursor";
 import Header from "../../components/Header";
-import data from "../../data/portfolio.json";
 import { ISOToDate, useIsomorphicLayoutEffect } from "../../utils";
 import { getAllPosts } from "../../utils/api";
-const Blog = ({ posts }) => {
+const Blog = ({ posts, data }) => {
   const showBlog = useRef(data.showBlog);
   const text = useRef();
   const router = useRouter();
@@ -124,7 +123,7 @@ const Blog = ({ posts }) => {
   );
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps({ req }) {
   const posts = getAllPosts([
     "slug",
     "title",
@@ -134,9 +133,30 @@ export async function getStaticProps() {
     "date",
   ]);
 
+  try {
+    const protocol = req.headers.host?.includes('localhost') ? 'http' : 'https';
+    const baseUrl = `${protocol}://${req.headers.host}`;
+
+    const res = await fetch(`${baseUrl}/api/portfolio`);
+    const data = await res.json();
+
+    if (data && Object.keys(data).length > 1) {
+      return {
+        props: {
+          posts: [...posts],
+          data,
+        },
+      };
+    }
+  } catch (error) {
+    console.log('Using default data:', error.message);
+  }
+
+  const defaultData = await import('../../data/portfolio.json');
   return {
     props: {
       posts: [...posts],
+      data: defaultData.default,
     },
   };
 }

@@ -11,10 +11,7 @@ import Button from "../components/Button";
 import Link from "next/link";
 import Cursor from "../components/Cursor";
 
-// Local Data
-import defaultData from "../data/portfolio.json";
-
-export default function Home({ data = defaultData }) {
+export default function Home({ data }) {
   // Ref
   const workRef = useRef();
   const aboutRef = useRef();
