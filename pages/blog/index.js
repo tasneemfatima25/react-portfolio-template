@@ -14,13 +14,22 @@ const Blog = ({ posts: initialPosts, data }) => {
 
   useIsomorphicLayoutEffect(() => {
     if (data && text.current) {
-      stagger(
-        [text.current],
-        { y: 40, x: -10, transform: "scale(0.95) skew(10deg)" },
-        { y: 0, x: 0, transform: "scale(1)" }
-      );
-      if (data.showBlog) stagger([text.current], { y: 30 }, { y: 0 });
-      else router.push("/");
+      try {
+        stagger(
+          [text.current],
+          { y: 40, x: -10, transform: "scale(0.95) skew(10deg)" },
+          { y: 0, x: 0, transform: "scale(1)" }
+        );
+        if (data.showBlog) {
+          stagger([text.current], { y: 30 }, { y: 0 });
+        } else {
+          router.push("/");
+        }
+      } catch (error) {
+        console.error("Animation error:", error);
+      }
+    } else if (data && !data.showBlog) {
+      router.push("/");
     }
   }, [router, data]);
 

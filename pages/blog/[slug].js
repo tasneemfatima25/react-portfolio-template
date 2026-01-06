@@ -17,7 +17,13 @@ const BlogPost = ({ post, data }) => {
   const router = useRouter();
 
   useIsomorphicLayoutEffect(() => {
-    stagger([textOne.current, textTwo.current], { y: 30 }, { y: 0 });
+    if (textOne.current && textTwo.current) {
+      try {
+        stagger([textOne.current, textTwo.current], { y: 30 }, { y: 0 });
+      } catch (error) {
+        console.error("Animation error:", error);
+      }
+    }
   }, []);
 
   return (
