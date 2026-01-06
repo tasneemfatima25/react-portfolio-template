@@ -8,10 +8,16 @@ import Button from "../components/Button";
 import { useTheme } from "next-themes";
 
 const Resume = ({ data }) => {
-  const { name, showResume, resume } = data;
   const router = useRouter();
   const theme = useTheme();
   const [mount, setMount] = useState(false);
+
+  // Handle missing data
+  if (!data) {
+    return <div>Loading...</div>;
+  }
+
+  const { name, showResume, resume } = data;
 
   useEffect(() => {
     setMount(true);

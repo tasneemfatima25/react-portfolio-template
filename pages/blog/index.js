@@ -8,10 +8,16 @@ import Header from "../../components/Header";
 import { ISOToDate, useIsomorphicLayoutEffect } from "../../utils";
 import { getAllPosts } from "../../utils/api";
 const Blog = ({ posts, data }) => {
-  const showBlog = useRef(data.showBlog);
   const text = useRef();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
+
+  // Handle missing data
+  if (!data) {
+    return <div>Loading...</div>;
+  }
+
+  const showBlog = useRef(data.showBlog);
 
   useIsomorphicLayoutEffect(() => {
     stagger(
