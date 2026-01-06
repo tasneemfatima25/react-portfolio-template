@@ -6,8 +6,8 @@ import Button from "../../components/Button";
 import Cursor from "../../components/Cursor";
 import Header from "../../components/Header";
 import { ISOToDate, useIsomorphicLayoutEffect } from "../../utils";
-import { getAllPosts } from "../../utils/api";
-const Blog = ({ posts, data }) => {
+const Blog = ({ posts: initialPosts, data }) => {
+  const [posts, setPosts] = useState(initialPosts);
   const text = useRef();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
@@ -28,6 +28,17 @@ const Blog = ({ posts, data }) => {
     setMounted(true);
   }, []);
 
+  const refreshPosts = () => {
+    fetch("/api/blog/posts")
+      .then(res => res.json())
+      .then(data => {
+        if (data.posts) {
+          setPosts(data.posts);
+        }
+      })
+      .catch(error => console.error("Error fetching posts:", error));
+  };
+
   const createBlog = () => {
     fetch("/api/blog", {
       method: "POST",
@@ -35,7 +46,7 @@ const Blog = ({ posts, data }) => {
         "Content-Type": "application/json",
       },
     }).then(() => {
-      router.reload(window.location.pathname);
+      refreshPosts();
     }).catch((error) => {
       console.error("Error creating blog:", error);
     });
@@ -51,7 +62,7 @@ const Blog = ({ posts, data }) => {
         slug,
       }),
     }).then(() => {
-      router.reload(window.location.pathname);
+      refreshPosts();
     }).catch((error) => {
       console.error("Error deleting blog:", error);
     });
@@ -130,37 +141,34 @@ const Blog = ({ posts, data }) => {
 };
 
 export async function getServerSideProps({ req }) {
-  const posts = getAllPosts([
-    "slug",
-    "title",
-    "image",
-    "preview",
-    "author",
-    "date",
-  ]);
-
   try {
     const protocol = req.headers.host?.includes('localhost') ? 'http' : 'https';
     const baseUrl = `${protocol}://${req.headers.host}`;
 
-    const res = await fetch(`${baseUrl}/api/portfolio`);
-    const data = await res.json();
+    // Fetch portfolio data and blog posts from database
+    const [portfolioRes, postsRes] = await Promise.all([
+      fetch(`${baseUrl}/api/portfolio`),
+      fetch(`${baseUrl}/api/blog/posts`)
+    ]);
+
+    const data = await portfolioRes.json();
+    const postsData = await postsRes.json();
 
     if (data && Object.keys(data).length > 1) {
       return {
         props: {
-          posts: [...posts],
+          posts: postsData.posts || [],
           data,
         },
       };
     }
   } catch (error) {
-    console.error('Error fetching portfolio data:', error.message);
+    console.error('Error fetching data:', error.message);
   }
 
   return {
     props: {
-      posts: [...posts],
+      posts: [],
       data: null,
     },
   };

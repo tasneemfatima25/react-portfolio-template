@@ -1,5 +1,4 @@
 import React, { useRef, useState } from "react";
-import { getPostBySlug, getAllPosts } from "../../utils/api";
 import Header from "../../components/Header";
 import ContentSection from "../../components/ContentSection";
 import Footer from "../../components/Footer";
@@ -10,9 +9,8 @@ import Button from "../../components/Button";
 import BlogEditor from "../../components/BlogEditor";
 import { useRouter } from "next/router";
 import Cursor from "../../components/Cursor";
-import data from "../../data/portfolio.json";
 
-const BlogPost = ({ post }) => {
+const BlogPost = ({ post, data }) => {
   const [showEditor, setShowEditor] = useState(false);
   const textOne = useRef();
   const textTwo = useRef();
@@ -77,39 +75,40 @@ const BlogPost = ({ post }) => {
   );
 };
 
-export async function getStaticProps({ params }) {
-  const post = getPostBySlug(params.slug, [
-    "date",
-    "slug",
-    "preview",
-    "title",
-    "tagline",
-    "preview",
-    "image",
-    "content",
-  ]);
+export async function getServerSideProps({ params, req }) {
+  try {
+    const protocol = req.headers.host?.includes('localhost') ? 'http' : 'https';
+    const baseUrl = `${protocol}://${req.headers.host}`;
 
-  return {
-    props: {
-      post: {
-        ...post,
-      },
-    },
-  };
-}
+    // Fetch portfolio data and blog posts from database
+    const [portfolioRes, postsRes] = await Promise.all([
+      fetch(`${baseUrl}/api/portfolio`),
+      fetch(`${baseUrl}/api/blog/posts`)
+    ]);
 
-export async function getStaticPaths() {
-  const posts = getAllPosts(["slug"]);
+    const data = await portfolioRes.json();
+    const postsData = await postsRes.json();
 
-  return {
-    paths: posts.map((post) => {
+    // Find the specific post by slug
+    const post = postsData.posts?.find(p => p.slug === params.slug);
+
+    if (!post) {
       return {
-        params: {
-          slug: post.slug,
-        },
+        notFound: true,
       };
-    }),
-    fallback: false,
-  };
+    }
+
+    return {
+      props: {
+        post,
+        data: data || {},
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching blog post:', error.message);
+    return {
+      notFound: true,
+    };
+  }
 }
 export default BlogPost;
