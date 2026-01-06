@@ -67,11 +67,17 @@ export default function Home({ data: initialData }) {
   };
 
   useIsomorphicLayoutEffect(() => {
-    stagger(
-      [textOne.current, textTwo.current, textThree.current, textFour.current],
-      { y: 40, x: -10, transform: "scale(0.95) skew(10deg)" },
-      { y: 0, x: 0, transform: "scale(1)" }
-    );
+    if (textOne.current && textTwo.current && textThree.current && textFour.current) {
+      try {
+        stagger(
+          [textOne.current, textTwo.current, textThree.current, textFour.current],
+          { y: 40, x: -10, transform: "scale(0.95) skew(10deg)" },
+          { y: 0, x: 0, transform: "scale(1)" }
+        );
+      } catch (error) {
+        console.error("Animation error:", error);
+      }
+    }
   }, []);
 
   // If data is not available, show loading or handle gracefully
