@@ -1,29 +1,49 @@
-import fs from "fs";
-import { join } from "path";
-import matter from "gray-matter";
+import { kv } from "@vercel/kv";
 
-export default function handler(req, res) {
-  const postsfolder = join(process.cwd(), `/_posts/`);
-  // if (process.env.NODE_ENV === "development") {
+export default async function handler(req, res) {
+  try {
     if (req.method === "POST") {
-      const { date, title, tagline, preview, image } = req.body.variables;
-      fs.writeFile(
-        postsfolder + req.body.slug + ".md",
-        matter.stringify(req.body.content, {
+      const { slug, content, variables } = req.body;
+      const { date, title, tagline, preview, image } = variables;
+
+      // Get existing posts
+      const posts = (await kv.get("blog_posts")) || [];
+
+      // Find and update the post
+      const postIndex = posts.findIndex(post => post.slug === slug);
+
+      if (postIndex !== -1) {
+        posts[postIndex] = {
+          slug,
+          content,
           date,
           title,
           tagline,
           preview,
           image,
-        }),
-        "utf-8",
-        (err) => console.log(err)
-      );
+        };
+      } else {
+        // If post doesn't exist, create it
+        posts.push({
+          slug,
+          content,
+          date,
+          title,
+          tagline,
+          preview,
+          image,
+        });
+      }
+
+      // Save to database
+      await kv.set("blog_posts", posts);
+
       res.status(200).json({ status: "DONE" });
     } else {
-      res
-        .status(200)
-        .json({ name: "This route works in development mode only" });
+      res.status(405).json({ error: "Method not allowed" });
     }
+  } catch (error) {
+    console.error("Blog edit error:", error);
+    res.status(500).json({ error: "Database error", details: error.message });
   }
-// }
+}
