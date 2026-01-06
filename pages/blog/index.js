@@ -28,11 +28,6 @@ const Blog = ({ posts, data }) => {
     setMounted(true);
   }, []);
 
-  // Handle missing data
-  if (!data) {
-    return <div>Loading...</div>;
-  }
-
   const createBlog = () => {
     fetch("/api/blog", {
       method: "POST",
@@ -61,6 +56,11 @@ const Blog = ({ posts, data }) => {
       console.error("Error deleting blog:", error);
     });
   };
+
+  if (!data) {
+    return <div>Loading...</div>;
+  }
+
   return (
     data.showBlog && (
       <>
