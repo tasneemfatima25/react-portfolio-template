@@ -86,7 +86,7 @@ const Blog = ({ posts: initialPosts, data }) => {
       <>
         {data.showCursor && <Cursor />}
         <Head>
-          <title>Blog</title>
+          <title className="section-tittle">Blog</title>
         </Head>
         <div
           className={`container mx-auto mb-10 ${
@@ -97,9 +97,9 @@ const Blog = ({ posts: initialPosts, data }) => {
           <div className="mt-10">
             <h1
               ref={text}
-              className="mx-auto mob:p-2 text-bold text-6xl laptop:text-8xl w-full"
+              className="section-title mb-6 mx-auto mob:p-2 text-bold text-6xl laptop:text-8xl w-full"
             >
-              Blog.
+              Blog
             </h1>
             <div className="mt-10 grid grid-cols-1 mob:grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 justify-between gap-10">
               {posts &&
@@ -126,7 +126,8 @@ const Blog = ({ posts: initialPosts, data }) => {
                             deleteBlog(post.slug);
                             e.stopPropagation();
                           }}
-                          type={"primary"}
+                          type="primary"
+                          classes=""
                         >
                           Delete
                         </Button>

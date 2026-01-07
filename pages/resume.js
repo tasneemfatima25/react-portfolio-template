@@ -29,9 +29,27 @@ const Resume = ({ data }) => {
     <>
       {/* {process.env.NODE_ENV === "development" && ( */}
         <div className="fixed bottom-6 right-6">
-          <Button onClick={() => router.push("/edit")} type={"primary"}>
-            Edit Resume
-          </Button>
+          <button 
+          onClick={() => router.push("/edit")}
+  className="
+    px-6 py-3 rounded-xl font-semibold
+    transition-all duration-300 ease-out
+    backdrop-blur-md
+
+    /* Light mode → Dark button */
+    dark:bg-black/90 dark:text-white
+    dark:hover:bg-black dark:hover:scale-[1.03]
+
+    /* Dark mode → Light button */
+    bg-white/90 text-black
+    hover:bg-white hover:scale-[1.03]
+
+    shadow-lg hover:shadow-2xl
+    active:scale-95
+  "
+>
+  Edit Resume
+</button>
         </div>
       {/* )} */}
       {data.showCursor && <Cursor />}
@@ -44,8 +62,11 @@ const Resume = ({ data }) => {
         {mount && (
           <div className="mt-10 w-full flex flex-col items-center">
             <div
-              className={`w-full ${
-                mount && theme.theme === "dark" ? "bg-slate-800" : "bg-gray-50 text-gray-700"
+              className={`w-full bg-transparent  ${
+                mount && theme.theme === "dark"
+                ? "border-2 border-neutral-700"
+                : "border border-neutral-300"
+              
               } max-w-4xl p-20 mob:p-5 desktop:p-20 rounded-lg shadow-sm`}
             >
               <h1 className="text-3xl font-bold">{name}</h1>

@@ -188,7 +188,7 @@ const Edit = () => {
 <Button
   onClick={() => setCurrentTabs("HEADER")}
   classes={`
-    px-4 py-2 rounded-md transition-all duration-200 hover:text-balck dark:hover:text-white
+    px-4 py-2 rounded-md transition-all duration-200 hover:text-black dark:hover:text-white
     ${
       currentTabs === "HEADER"
         ? "dark:bg-black dark:text-white bg-white text-black"
@@ -347,7 +347,7 @@ const Edit = () => {
               <div className="w-4/5 ml-10 flex items-center">
                 <Button
                   onClick={() => setData({ ...data, showBlog: true })}
-                  type={data.showBlog && "primary"}
+                  classes={data.showBlog && "bg-white text-black dark:bg-black dark:text-white"}
                 >
                   Yes
                 </Button>
@@ -361,12 +361,12 @@ const Edit = () => {
                 </Button>
               </div>
             </div>
-            <div className="mt-5 flex items-center">
+            {/* <div className="mt-5 flex items-center">
               <label className="w-1/5 text-lg opacity-50">Dark Mode</label>
               <div className="w-4/5 ml-10 flex items-center">
                 <Button
                   onClick={() => setData({ ...data, darkMode: true })}
-                  type={data.darkMode && "primary"}
+                  classes={data.darkMode && "bg-white text-black dark:bg-black dark:text-white"}
                 >
                   Yes
                 </Button>
@@ -379,13 +379,13 @@ const Edit = () => {
                   No
                 </Button>
               </div>
-            </div>
+            </div> */}
             <div className="mt-5 flex items-center">
               <label className="w-1/5 text-lg opacity-50">Show Resume</label>
               <div className="w-4/5 ml-10 flex items-center">
                 <Button
                   onClick={() => setData({ ...data, showResume: true })}
-                  type={data.showResume && "primary"}
+                  classes={data.showResume && "bg-white text-black dark:bg-black dark:text-white"}
                 >
                   Yes
                 </Button>
@@ -404,7 +404,7 @@ const Edit = () => {
               <div className="w-4/5 ml-10 flex items-center">
                 <Button
                   onClick={() => setData({ ...data, showCursor: true })}
-                  type={data.showCursor && "primary"}
+                  classes={data.showCursor && "bg-white text-black dark:bg-black dark:text-white"}
                 >
                   Yes
                 </Button>
@@ -430,7 +430,8 @@ const Edit = () => {
                     <h1 className="text-2xl">{project.title}</h1>
                     <Button
                       onClick={() => deleteProject(project.id)}
-                      type="primary"
+                      type="default"
+                      classes="border border-red-500 text-red-500"
                     >
                       Delete
                     </Button>
@@ -502,7 +503,8 @@ const Edit = () => {
             </div>
 
             <div className="my-10">
-              <Button onClick={addProject} type="primary">
+              <Button onClick={addProject} type="default"
+                      classes="border">
                 Add Project +
               </Button>
             </div>
@@ -518,7 +520,8 @@ const Edit = () => {
                     <h1 className="text-2xl">{service.title}</h1>
                     <Button
                       onClick={() => deleteService(service.id)}
-                      type="primary"
+                     type="default"
+                      classes="border border-red-500 text-red-500"
                     >
                       Delete
                     </Button>
@@ -557,7 +560,8 @@ const Edit = () => {
               ))}
             </div>
             <div className="my-10">
-              <Button onClick={addService} type="primary">
+              <Button onClick={addService} type="default"
+                      classes="border">
                 Add Service +
               </Button>
             </div>
@@ -582,7 +586,8 @@ const Edit = () => {
                     <h1 className="text-2xl">{social.title}</h1>
                     <Button
                       onClick={() => deleteSocials(social.id)}
-                      type="primary"
+                     type="default"
+                      classes="border border-red-500 text-red-500"
                     >
                       Delete
                     </Button>
@@ -620,7 +625,8 @@ const Edit = () => {
               </>
             ))}
             <div className="my-10">
-              <Button onClick={addSocials} type="primary">
+              <Button onClick={addSocials} type="default"
+                      classes="border">
                 Add Social +
               </Button>
             </div>
@@ -666,7 +672,8 @@ const Edit = () => {
                     <h1 className="text-2xl">{experiences.position}</h1>
                     <Button
                       // onClick={() => deleteProject(project.id)}
-                      type="primary"
+                     type="default"
+                      classes="border border-red-500 text-red-500"
                     >
                       Delete
                     </Button>
@@ -735,7 +742,8 @@ const Edit = () => {
               ))}
             </div>
             <div className="my-10">
-              <Button onClick={handleAddExperiences} type="primary">
+              <Button onClick={handleAddExperiences}  type="default"
+                      classes="border">
                 Add Experience +
               </Button>
             </div>
@@ -840,14 +848,19 @@ const Edit = () => {
                             },
                           })
                         }
+                        type="default"
+                      classes="border border-red-500 text-red-500"
                       >
                         Remove
                       </Button>
                     </div>
                   ))}
-                  <Button
-                    type="primary"
-                    classes="hover:scale-100"
+            
+                </div>
+          
+              </div>
+              <Button
+                    classes="hover:scale-100 border text-center"
                     onClick={() =>
                       setData({
                         ...data,
@@ -857,11 +870,10 @@ const Edit = () => {
                         },
                       })
                     }
+                    type="default"
                   >
-                    Add +
+                    Add Languages +
                   </Button>
-                </div>
-              </div>
               <hr className="my-10"></hr>
               <div className="flex">
                 <label className="w-1/5 text-lg opacity-50">Frameworks</label>
@@ -898,12 +910,18 @@ const Edit = () => {
                             },
                           })
                         }
+                         type="default"
+                      classes="border border-red-500 text-red-500"
+                        
                       >
                         Remove
                       </Button>
                     </div>
                   ))}
-                  <Button
+                 
+                </div>
+              </div>
+              <Button
                     onClick={() =>
                       setData({
                         ...data,
@@ -913,13 +931,11 @@ const Edit = () => {
                         },
                       })
                     }
-                    type="primary"
-                    classes="hover:scale-100"
+                    type="default"
+                    classes="hover:scale-100 border"
                   >
-                    Add +
+                    Add Frameworks +
                   </Button>
-                </div>
-              </div>
               <hr className="my-10"></hr>
               <div className="flex">
                 <label className="w-1/5 text-lg opacity-50">Others</label>
@@ -956,12 +972,17 @@ const Edit = () => {
                             },
                           })
                         }
+                         type="default"
+                      classes="border border-red-500 text-red-500"
                       >
                         Remove
                       </Button>
                     </div>
                   ))}
-                  <Button
+                
+                </div>
+              </div>
+              <Button
                     onClick={() =>
                       setData({
                         ...data,
@@ -971,13 +992,11 @@ const Edit = () => {
                         },
                       })
                     }
-                    type="primary"
-                    classes="hover:scale-100"
+                    type="default"
+                    classes="hover:scale-100 border"
                   >
                     Add +
                   </Button>
-                </div>
-              </div>
             </div>
           </div>
         )}

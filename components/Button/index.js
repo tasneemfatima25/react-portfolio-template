@@ -17,7 +17,7 @@ const Button = ({ children, type, onClick, classes = "" }) => {
           rounded-lg font-medium
           transition-all duration-300 ease-out
           hover:scale-105 active:scale-100
-          ${theme === "dark" ? "bg-black text-white" : "bg-white text-balck"}
+          ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"}
           ${data.showCursor ? "cursor-none" : ""}
           ${classes}
         `}

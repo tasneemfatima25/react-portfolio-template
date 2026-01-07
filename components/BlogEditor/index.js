@@ -42,7 +42,7 @@ const BlogEditor = ({ post, close, refresh }) => {
   return (
     <div
       className={`fixed z-10 w-screen h-screen overflow-auto top-0 flex flex-col items-center ${
-        theme === "dark" ? "bg-black" : "bg-white"
+        theme === "dark" ? "bg-white" : "bg-black"
       }`}
     >
       <div className="container my-20">
@@ -76,10 +76,10 @@ const BlogEditor = ({ post, close, refresh }) => {
         {currentTabs === "BLOGDETAILS" && (
           <div className="mt-10">
             <div className="mt-5 flex flex-col items-center">
-              <label className="w-full text-sx opacity-50">Date</label>
+              <label className="w-full text-xl opacity-80">Date</label>
               <DatePicker
                 selected={new Date(blogVariables.date)}
-                className="w-full mt-2 p-4 hover:border-blue-400 rounded-md shadow-lg border-2"
+                className="w-full mt-2 p-4 hover:border-blue-400 rounded-md shadow-lg border-2 dark:text-white text-black"
                 onChange={(date) => {
                   setBlogVariables({
                     ...blogVariables,
@@ -89,19 +89,19 @@ const BlogEditor = ({ post, close, refresh }) => {
               />
             </div>
             <div className="mt-5 flex flex-col items-center">
-              <label className="w-full text-sx opacity-50">Title</label>
+              <label className="w-full text-xl opacity-80">Title</label>
               <input
                 value={blogVariables.title}
                 onChange={(e) =>
                   setBlogVariables({ ...blogVariables, title: e.target.value })
                 }
-                className="w-full mt-2 p-4 hover:border-blue-400 rounded-md shadow-lg border-2"
+                className="w-full mt-2 p-4 hover:border-blue-400 rounded-md shadow-lg border-2 dark:text-white text-black"
                 type="text"
               ></input>
             </div>
 
             <div className="mt-5 flex flex-col items-center">
-              <label className="w-full text-sx opacity-50">Tagline</label>
+              <label className="w-full text-xl opacity-80">Tagline</label>
               <input
                 value={blogVariables.tagline}
                 onChange={(e) =>
@@ -110,12 +110,12 @@ const BlogEditor = ({ post, close, refresh }) => {
                     tagline: e.target.value,
                   })
                 }
-                className="w-full mt-2 p-4 hover:border-blue-400 rounded-md shadow-lg border-2"
+                className="w-full mt-2 p-4 hover:border-blue-400 rounded-md shadow-lg border-2 dark:text-white text-black"
                 type="text"
               ></input>
             </div>
             <div className="mt-5 flex flex-col items-center">
-              <label className="w-full text-sx opacity-50">preview (SEO)</label>
+              <label className="w-full text-xl opacity-80">preview (SEO)</label>
               <textarea
                 value={blogVariables.preview}
                 onChange={(e) =>
@@ -124,12 +124,12 @@ const BlogEditor = ({ post, close, refresh }) => {
                     preview: e.target.value,
                   })
                 }
-                className="w-full mt-2 p-4 hover:border-blue-400 rounded-md shadow-lg border-2"
+                className="w-full mt-2 p-4 hover:border-blue-400 rounded-md shadow-lg border-2 dark:text-white text-black"
                 type="text"
               ></textarea>
             </div>
             <div className="mt-5 flex flex-col items-center">
-              <label className="w-full text-sx opacity-50">Image</label>
+              <label className="w-full text-xl opacity-80">Image</label>
               <input
                 value={blogVariables.image}
                 onChange={(e) =>
@@ -138,7 +138,7 @@ const BlogEditor = ({ post, close, refresh }) => {
                     image: e.target.value,
                   })
                 }
-                className="w-full mt-2 p-4 hover:border-blue-400 rounded-md shadow-lg border-2"
+                className="w-full mt-2 p-4 hover:border-blue-400 rounded-md shadow-lg border-2 dark:text-white text-black"
                 type="text"
               ></input>
             </div>
@@ -148,11 +148,12 @@ const BlogEditor = ({ post, close, refresh }) => {
         {currentTabs === "CONTENT" && (
           <div className="mt-10">
             <div className="flex flex-col items-center">
-              <label className="w-full text-sx opacity-50">Content</label>
+              <label className="w-full text-xl opacity-80">Content</label>
               <TextareaAutosize
-                className="w-full h-auto mt-5 p-4 border hover:border-blue-400 rounded-xl shadow-xl"
                 value={blogContent}
                 onChange={(e) => setBlogContent(e.target.value)}
+                className="w-full h-auto mt-5 p-4 border hover:border-blue-400 rounded-xl shadow-xl dark:text-white text-black"
+
               ></TextareaAutosize>
             </div>
           </div>
