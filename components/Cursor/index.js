@@ -4,38 +4,33 @@ import "custom-cursor-react/dist/index.css";
 import { useTheme } from "next-themes";
 
 const Cursor = () => {
-  const theme = useTheme();
-  const [mount, setMount] = useState();
-
-  const getCusomColor = () => {
-    if (theme.theme === "dark") {
-      return "#fff";
-    } else if (theme.theme === "light") {
-      return "#000";
-    }
-  };
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMount(true);
+    setMounted(true);
   }, []);
+
+  if (!mounted) return null;
+
   return (
-    <>
-      {mount && (
-        <CustomCursor
-          targets={[".link"]}
-          customClass="custom-cursor"
-          dimensions={30}
-          fill={getCusomColor()}
-          smoothness={{
-            movement: 0.2,
-            scale: 0.1,
-            opacity: 0.2,
-          }}
-          targetOpacity={0.5}
-          targetScale={2}
-        />
-      )}
-    </>
+    <CustomCursor
+      /* ONLY interactive elements */
+      targets={["a", "button", ".cursor-hover"]}
+
+      customClass="custom-cursor"
+      dimensions={18}          // ⬅ smaller
+      fill={theme === "dark" ? "#ffffff" : "#000000"}
+
+      smoothness={{
+        movement: 0.12,        // ⬅ smoother
+        scale: 0.08,
+        opacity: 0.2,
+      }}
+
+      targetOpacity={0.4}
+      targetScale={1.4}        // ⬅ less aggressive
+    />
   );
 };
 

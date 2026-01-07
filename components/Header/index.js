@@ -4,12 +4,38 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Button from "../Button";
 // Local Data
-import data from "../../data/portfolio.json";
+import SunIcon from "../icons/SunIcon";
+import MoonIcon from "../icons/Moon";
+
+
 
 const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
   const router = useRouter();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [data, setData] = useState(false);
+
+let headerName= data.name
+  useEffect(() => {
+    const refreshData = () => {
+      fetch("/api/portfolio")
+        .then((res) => res.json())
+        .then((newData) => {
+          if (newData && Object.keys(newData).length > 1) {
+            setData(newData);
+          }
+        })
+        .catch(() => {});
+    };
+
+    router.events.on("routeChangeComplete", refreshData);
+    window.addEventListener("focus", refreshData);
+
+    return () => {
+      router.events.off("routeChangeComplete", refreshData);
+      window.removeEventListener("focus", refreshData);
+    };
+  }, [router]);
 
   const { name, showBlog, showResume } = data;
 
@@ -25,9 +51,9 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
             <div className="flex items-center justify-between p-2 laptop:p-0">
               <h1
                 onClick={() => router.push("/")}
-                className="text-2xl p-2 laptop:p-0 link"
+                className="text-4xl p-2 laptop:p-0 link"
               >
-                {name}
+                {headerName}
               </h1>
 
               <div className="flex items-center">
@@ -119,15 +145,13 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
         )}
       </Popover>
       <div
-        className={`mt-10 hidden flex-row items-center justify-between sticky ${
-          theme === "light" && "bg-white"
-        } dark:text-white top-0 z-10 tablet:flex`}
+        className={`mt-4 hidden flex-row items-center justify-between sticky dark:text-white top-0 z-10 tablet:flex`}
       >
         <h1
           onClick={() => router.push("/")}
-          className="text-2xl cursor-pointer mob:p-2 laptop:p-0"
+          className="text-4xl cursor-pointer mob:p-2 laptop:p-0 dark:text-black text-white"
         >
-          {name}
+         { headerName}
         </h1>
         {!isBlog ? (
           <div className="flex">
@@ -145,19 +169,25 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
               </Button>
             )}
 
-            <Button onClick={() => window.open("mailto:hello@chetanverma.com")}>
+            <Button onClick={() => window.open("mailto:tasneemfatima062@gmail.com")}>
               Contact
             </Button>
-            {mounted && theme && data.darkMode && (
-              <Button
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              >
-                <img
-                  className="h-6"
-                  src={`/images/${theme === "dark" ? "moon.svg" : "sun.svg"}`}
-                ></img>
-              </Button>
-            )}
+            {mounted && (
+  <button 
+  className={`
+    p-2 rounded-full transition
+    ${theme === "dark"
+      ? "text-white hover:text-balck text-white"
+      : "text-white hover:text-black"}
+  `}
+  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>
+    {theme === "dark" ? (
+     <SunIcon className="h-6 w-6 text-black hover:text-white" />
+    ) : (
+      <MoonIcon  className="h-6 w-6 text-white hover:text-black"/>
+    )}
+  </button>
+)}
           </div>
         ) : (
           <div className="flex">
@@ -194,5 +224,24 @@ const Header = ({ handleWorkScroll, handleAboutScroll, isBlog }) => {
     </>
   );
 };
+export async function getServerSideProps({ req }) {
+  try {
+    const protocol = req.headers.host.includes("localhost")
+      ? "http"
+      : "https";
+    const baseUrl = `${protocol}://${req.headers.host}`;
+
+    const res = await fetch(`${baseUrl}/api/portfolio`);
+    const data = await res.json();
+
+    if (data && Object.keys(data).length > 1) {
+      return { props: { data } };
+    }
+  } catch {
+    return { props: { data: null } };
+  }
+
+  return { props: { data: null } };
+}
 
 export default Header;

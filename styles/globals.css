@@ -1,77 +1,133 @@
 @import url("https://fonts.googleapis.com/css2?family=Hind:wght@400;500;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @import "./markdown.css";
 
+
+/* -------------------- BASE -------------------- */
 * {
-  font-family: "Hind";
+  font-family: "Hind", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  @apply dark:bg-black dark:text-white;
+  @apply bg-black text-white;
 }
 
+.dark body {
+  @apply bg-white text-black;
+}
+
+/* -------------------- HERO TEXT -------------------- */
+.hero-text {
+  @apply text-4xl tablet:text-6xl laptop:text-7xl laptopl:text-8xl
+  font-extrabold tracking-tight leading-[1.05];
+}
+
+/* -------------------- SECTION TITLE -------------------- */
+.section-title {
+  @apply text-3xl laptop:text-5xl font-bold relative inline-block;
+}
+
+.section-title::after {
+  content: "";
+  @apply absolute left-0 -bottom-4 w-16 h-1 bg-purple-500 rounded-full;
+}
+
+/* -------------------- GLASSMORPHISM -------------------- */
+.glass {
+  @apply backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl;
+}
+
+/* -------------------- GRADIENT BACKGROUNDS -------------------- */
 .gradient-circle {
   position: absolute;
   pointer-events: none;
-  z-index: 100;
-  top: -30px;
-  height: 40px;
+  z-index: -1;
+  top: -100px;
+  height: 200px;
   width: 100vw;
-  opacity: 0.5;
-  filter: blur(40px);
+  opacity: 0.6;
+  filter: blur(80px);
   background: radial-gradient(
     circle,
-    rgba(248, 107, 223, 1) 0%,
-    rgba(107, 107, 248, 0.8) 100%
+    rgba(248, 107, 223, 0.9) 0%,
+    rgba(107, 107, 248, 0.6) 100%
   );
 }
+
 .gradient-circle-bottom {
   position: absolute;
   pointer-events: none;
-  z-index: 100;
-  bottom: -20px;
-  height: 30px;
+  z-index: -1;
+  bottom: -100px;
+  height: 200px;
   width: 100vw;
-  opacity: 0.5;
-  filter: blur(40px);
+  opacity: 0.6;
+  filter: blur(80px);
   background: radial-gradient(
     circle,
-    rgba(248, 107, 223, 1) 0%,
-    rgba(107, 107, 248, 0.8) 100%
+    rgba(248, 107, 223, 0.9) 0%,
+    rgba(107, 107, 248, 0.6) 100%
   );
 }
 
-.gradient-shadow:hover::before {
+/* -------------------- CARD HOVER GLOW -------------------- */
+.gradient-shadow {
+  position: relative;
+}
+
+.gradient-shadow::before {
   content: "";
-  z-index: -1;
   position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: linear-gradient(-45deg, #45caff 0%, #ff1b6b 100%);
-  transform: translate3d(0px, 20px, 0) scale(0.95);
-  filter: blur(20px);
-  opacity: var(0.7);
-  transition: opacity 0.3s;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(135deg, #45caff, #ff1b6b);
+  filter: blur(30px);
+  opacity: 0;
+  transition: opacity 0.4s ease;
   border-radius: inherit;
 }
 
-/* 
-* Prevents issues when the parent creates a 
-* stacking context. (For example, using the transform
-* property )
-*/
-.gradient-shadow:hover::after {
-  content: "";
-  z-index: -1;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: inherit;
-  border-radius: inherit;
+.gradient-shadow:hover::before {
+  opacity: 0.7;
 }
+
+/* -------------------- SMOOTH HOVER -------------------- */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* -------------------- SCROLLBAR (DESKTOP) -------------------- */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+.hero-text {
+  letter-spacing: -0.02em;
+}
+

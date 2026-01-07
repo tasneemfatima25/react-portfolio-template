@@ -1,26 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { useTheme } from "next-themes";
+import React from "react";
 
 const ServiceCard = ({ name, description }) => {
-  const { theme } = useTheme();
-  const [mounted, setMounted] = useState();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
   return (
     <div
-      className={`w-full p-2 mob:p-4 rounded-lg transition-all ease-out duration-300 ${
-        mounted && theme === "dark" ? "hover:bg-slate-800" : "hover:bg-slate-50"
-      } hover:scale-105 link`}
-    >
-      <h1 className="text-3xl">{name ? name : "Heading"}</h1>
-      <p className="mt-5 opacity-40 text-xl">
-        {description
-          ? description
-          : "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. "}
-      </p>
-    </div>
+    className="
+      w-full
+      p-4
+      rounded-xl
+      transition-all duration-300 ease-out
+      bg-transparent
+      border
+      border-white/10 dark:border-black/10
+      hover:border-white/30 dark:hover:border-black/30
+      hover:bg-white/5 dark:hover:bg-black/5
+    "
+  >
+    <h1 className="text-2xl laptop:text-3xl font-semibold text-white dark:text-black">
+      {name || "Heading"}
+    </h1>
+  
+    <p className="mt-4 text-base laptop:text-lg leading-relaxed text-white/70 dark:text-black/70">
+      {description ||
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry."}
+    </p>
+  </div>
+  
   );
 };
 

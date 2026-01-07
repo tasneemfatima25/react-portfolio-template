@@ -1,0 +1,15 @@
+import React from "react";
+
+const MoonIcon = ({ className = "" }) => {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      fill="currentColor"
+    >
+      <path d="M21 12.79A9 9 0 0111.21 3 7 7 0 0012 21a9 9 0 009-8.21z" />
+    </svg>
+  );
+};
+
+export default MoonIcon;
