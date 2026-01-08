@@ -12,6 +12,14 @@ export default async function handler(req, res) {
     return;
   }
 
+  // Check if KV is properly configured
+  const kvConfigured = process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN;
+
+  if (!kvConfigured) {
+    console.error("KV environment variables not configured");
+    return res.status(200).json({});
+  }
+
   try {
     if (req.method === "POST") {
       await kv.set("portfolio", req.body);
@@ -21,6 +29,7 @@ export default async function handler(req, res) {
 
       // If no data in database, return empty object (not null)
       if (!data) {
+        console.log("No portfolio data found in database");
         return res.status(200).json({});
       }
 
