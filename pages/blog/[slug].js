@@ -83,8 +83,8 @@ const BlogPost = ({ post, data }) => {
 
 export async function getServerSideProps({ params, req }) {
   try {
-    const protocol = req.headers.host?.includes('localhost') ? 'http' : 'https';
-    const baseUrl = `${protocol}://${req.headers.host}`;
+   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
 
     // Fetch portfolio data and blog posts from database
     const [portfolioRes, postsRes] = await Promise.all([

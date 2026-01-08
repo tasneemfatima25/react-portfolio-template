@@ -181,8 +181,8 @@ const Resume = ({ data }) => {
 
 export async function getServerSideProps({ req }) {
   try {
-    const protocol = req.headers.host?.includes('localhost') ? 'http' : 'https';
-    const baseUrl = `${protocol}://${req.headers.host}`;
+   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
 
     const res = await fetch(`${baseUrl}/api/portfolio`);
     let data = null;
