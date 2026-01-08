@@ -7,25 +7,27 @@ import Socials from "../components/Socials";
 import Button from "../components/Button";
 import { useTheme } from "next-themes";
 
+const DEFAULT_DATA = {
+  name: "",
+  showResume: false,
+  showCursor: false,
+  socials: [],
+  resume: {
+    tagline: "",
+    description: "",
+    experiences: [],
+    education: {},
+    languages: [],
+    frameworks: [],
+    others: [],
+  },
+};
+
 const Resume = ({ data }) => {
 
-  const DEFAULT_DATA = {
-    name: "",
-    showResume: false,
-    showCursor: false,
-    socials: [],
-    resume: {
-      tagline: "",
-      description: "",
-      experiences: [],
-      education: {},
-      languages: [],
-      frameworks: [],
-      others: [],
-    },
-  };
 
-  const safeData = data || DEFAULT_DATA;
+  const safeData = { ...DEFAULT_DATA, ...data };
+
 
   console.log("safedata", safeData)
 
@@ -36,10 +38,10 @@ const Resume = ({ data }) => {
 
   useEffect(() => {
     setMount(true);
-  if (data && data.showResume === false) {
-  router.push("/");
-}
-  }, [data, router]);
+    if (safeData.showResume === false) {
+      router.push("/");
+    }
+  }, [safeData.showResume, router]);
 
   // Handle missing data
   if (!data) {
