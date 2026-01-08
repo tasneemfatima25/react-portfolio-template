@@ -9,7 +9,7 @@ import { useTheme } from "next-themes";
 
 const DEFAULT_DATA = {
   name: "",
-  showResume: false,
+  showResume: true,
   showCursor: false,
   socials: [],
   resume: {

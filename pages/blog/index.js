@@ -13,7 +13,7 @@ const DEFAULT_DATA = {
   showCursor: false,
 };
 const Blog = ({ posts: initialPosts, data }) => {
-  const safeData = data || DEFAULT_DATA;
+  const safeData = { ...DEFAULT_DATA, ...data };
   const [posts, setPosts] = useState(initialPosts);
   const text = useRef();
   const router = useRouter();
