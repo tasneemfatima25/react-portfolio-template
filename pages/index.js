@@ -78,11 +78,11 @@ export default function Home({ data: initialData }) {
     }
   }, []);
 
-  // if (!data) return <div className="text-center mt-20">Loading...</div>;
+  if (!data) return <div className="text-center mt-20">Loading...</div>;
 
   return (
-    <div className={`relative ${data.showCursor && "cursor-none"}`}>
-      {data.showCursor && <Cursor />}
+    <div className={`relative ${data?.showCursor ? "cursor-none" : ""}`}>
+  {data?.showCursor && <Cursor />}
 
       <Head>
         <title>{data.name}</title>
@@ -264,13 +264,18 @@ export async function getServerSideProps({ req }) {
     const res = await fetch(`${baseUrl}/api/portfolio`);
     const data = await res.json();
 
-    // Return data if it exists (even empty object)
-    if (data) {
-      return { props: { data } };
-    }
+    return {
+      props: {
+        data: data || {},
+      },
+    };
   } catch (error) {
-    console.error('Error in getServerSideProps:', error);
-  }
+    console.error("Error in getServerSideProps:", error);
 
-  return { props: { data: null } };
+    return {
+      props: {
+        data: {},
+      },
+    };
+  }
 }
