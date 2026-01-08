@@ -262,23 +262,11 @@ export async function getServerSideProps({ req }) {
     const baseUrl = `${protocol}://${req.headers.host}`;
 
     const res = await fetch(`${baseUrl}/api/portfolio`);
-
-    if (!res.ok) {
-      throw new Error("API response not OK");
-    }
-
-    const text = await res.text();
-
-    // Ensure JSON
-    if (!text.startsWith("{")) {
-      throw new Error("API did not return JSON");
-    }
-
-    const data = JSON.parse(text);
+    const data = await res.json();
 
     return {
       props: {
-        data,
+        data: data || null,
       },
     };
   } catch (error) {
@@ -291,4 +279,5 @@ export async function getServerSideProps({ req }) {
     };
   }
 }
+
 
