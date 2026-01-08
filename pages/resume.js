@@ -13,6 +13,7 @@ const Resume = ({ data }) => {
     name: "",
     showResume: false,
     showCursor: false,
+    socials: [],
     resume: {
       tagline: "",
       description: "",
@@ -96,7 +97,7 @@ const Resume = ({ data }) => {
                 {resume.description}
               </h2>
               <div className="mt-2">
-                <Socials socials={data.socials}/>
+              <Socials socials={safeData.socials || []} />
               </div>
               <div className="mt-5">
                 <h1 className="text-2xl font-bold">Experience</h1>
