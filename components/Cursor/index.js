@@ -20,8 +20,7 @@ const Cursor = () => {
 
       customClass="custom-cursor"
       dimensions={18}          // ⬅ smaller
-      fill={theme === "dark" ? "#ffffff" : "#000000"}
-
+      fill={theme === "dark" ? "#000000" : "#ffffff"}
       smoothness={{
         movement: 0.12,        // ⬅ smoother
         scale: 0.08,

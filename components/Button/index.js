@@ -1,6 +1,5 @@
 import React from "react";
 import { useTheme } from "next-themes";
-import data from "../../data/portfolio.json";
 
 const Button = ({ children, type, onClick, classes = "" }) => {
   const { theme } = useTheme();
@@ -18,7 +17,6 @@ const Button = ({ children, type, onClick, classes = "" }) => {
           transition-all duration-300 ease-out
           hover:scale-105 active:scale-100
           ${theme === "dark" ? "bg-black text-white" : "bg-white text-black"}
-          ${data.showCursor ? "cursor-none" : ""}
           ${classes}
         `}
       >
@@ -46,7 +44,6 @@ const Button = ({ children, type, onClick, classes = "" }) => {
             : "bg-transparent text-white hover:bg-slate-100 hover:text-black"
         }
 
-        ${data.showCursor ? "cursor-none" : ""}
         ${classes}
       `}
     >

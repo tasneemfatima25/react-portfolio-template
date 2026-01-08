@@ -27,6 +27,8 @@ const Resume = ({ data }) => {
 
   const safeData = data || DEFAULT_DATA;
 
+  console.log("safedata", safeData)
+
 
   const router = useRouter();
   const theme = useTheme();
