@@ -13,8 +13,22 @@ import Link from "next/link";
 import Cursor from "../components/Cursor";
 
 export default function Home({ data: initialData }) {
+
+  const DEFAULT_DATA = {
+    name: "",
+    showCursor: false,
+    headerTaglineOne: "",
+    headerTaglineTwo: "",
+    headerTaglineThree: "",
+    headerTaglineFour: "",
+    socials: [],
+    projects: [],
+    services: [],
+    aboutpara: "",
+  };
+
   const router = useRouter();
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState(initialData || DEFAULT_DATA);
 
   const workRef = useRef();
   const aboutRef = useRef();
@@ -24,25 +38,20 @@ export default function Home({ data: initialData }) {
   const textFour = useRef();
 
   useEffect(() => {
-    const refreshData = () => {
-      fetch("/api/portfolio")
-        .then((res) => res.json())
-        .then((newData) => {
-          if (newData && Object.keys(newData).length > 1) {
-            setData(newData);
-          }
-        })
-        .catch(() => {});
+    const loadData = async () => {
+      try {
+        const res = await fetch("/api/portfolio");
+        if (!res.ok) return;
+  
+        const newData = await res.json();
+        if (newData) setData(newData);
+      } catch (e) {
+        console.log("Client fetch failed");
+      }
     };
-
-    router.events.on("routeChangeComplete", refreshData);
-    window.addEventListener("focus", refreshData);
-
-    return () => {
-      router.events.off("routeChangeComplete", refreshData);
-      window.removeEventListener("focus", refreshData);
-    };
-  }, [router]);
+  
+    loadData();
+  }, []);
 
   const handleWorkScroll = () => {
     window.scrollTo({
@@ -78,7 +87,7 @@ export default function Home({ data: initialData }) {
     }
   }, []);
 
-  if (!data) return <div className="text-center mt-20">Loading...</div>;
+  // if (!data) return <div className="text-center mt-20">Loading...</div>;
 
   return (
     <div className={`relative ${data?.showCursor ? "cursor-none" : ""}`}>
