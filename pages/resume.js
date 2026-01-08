@@ -163,7 +163,8 @@ export async function getServerSideProps({ req }) {
     const res = await fetch(`${baseUrl}/api/portfolio`);
     const data = await res.json();
 
-    if (data && Object.keys(data).length > 1) {
+    // Return data if it exists
+    if (data) {
       return { props: { data } };
     }
   } catch (error) {

@@ -264,11 +264,12 @@ export async function getServerSideProps({ req }) {
     const res = await fetch(`${baseUrl}/api/portfolio`);
     const data = await res.json();
 
-    if (data && Object.keys(data).length > 1) {
+    // Return data if it exists (even empty object)
+    if (data) {
       return { props: { data } };
     }
-  } catch {
-    return { props: { data: null } };
+  } catch (error) {
+    console.error('Error in getServerSideProps:', error);
   }
 
   return { props: { data: null } };

@@ -164,7 +164,8 @@ export async function getServerSideProps({ req }) {
     const data = await portfolioRes.json();
     const postsData = await postsRes.json();
 
-    if (data && Object.keys(data).length > 1) {
+    // Return data if it exists
+    if (data) {
       return {
         props: {
           posts: postsData.posts || [],
