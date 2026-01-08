@@ -83,7 +83,10 @@ const BlogPost = ({ post, data }) => {
 
 export async function getServerSideProps({ params, req }) {
   try {
-   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+   const protocol = req.headers["x-forwarded-proto"] || "https";
+const host = req.headers.host;
+const baseUrl = `${protocol}://${host}`;
+;
 
 
     // Fetch portfolio data and blog posts from database

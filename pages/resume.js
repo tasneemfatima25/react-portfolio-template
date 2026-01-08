@@ -181,7 +181,10 @@ const Resume = ({ data }) => {
 
 export async function getServerSideProps({ req }) {
   try {
-   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+   const protocol = req.headers["x-forwarded-proto"] || "https";
+const host = req.headers.host;
+const baseUrl = `${protocol}://${host}`;
+;
 
 
     const res = await fetch(`${baseUrl}/api/portfolio`);
