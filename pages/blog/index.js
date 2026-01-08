@@ -13,6 +13,14 @@ const Blog = ({ posts: initialPosts, data }) => {
   const [mounted, setMounted] = useState(false);
 
   useIsomorphicLayoutEffect(() => {
+
+    const DEFAULT_DATA = {
+      showBlog: false,
+      showCursor: false,
+    };
+
+    const safeData = data || DEFAULT_DATA;
+
     if (data && text.current) {
       try {
         stagger(
@@ -20,7 +28,7 @@ const Blog = ({ posts: initialPosts, data }) => {
           { y: 40, x: -10, transform: "scale(0.95) skew(10deg)" },
           { y: 0, x: 0, transform: "scale(1)" }
         );
-        if (data.showBlog) {
+        if (safeData.showBlog) {
           stagger([text.current], { y: 30 }, { y: 0 });
         } else {
           router.push("/");
@@ -77,21 +85,20 @@ const Blog = ({ posts: initialPosts, data }) => {
     });
   };
 
-  if (!data) {
-    // return <div>Loading...</div>;
-  }
+  // if (!data) {
+  //   // return <div>Loading...</div>;
+  // }
 
   return (
-    data.showBlog && (
+    data?.showBlog && (
       <>
-        {data.showCursor && <Cursor />}
+        {safeData?.showCursor && <Cursor />}
         <Head>
           <title className="section-tittle">Blog</title>
         </Head>
         <div
-          className={`container mx-auto mb-10 ${
-            data.showCursor && "cursor-none"
-          }`}
+          className={`container mx-auto ${safeData?.showCursor ? "cursor-none" : ""}`}
+
         >
           <Header isBlog={true}></Header>
           <div className="mt-10">
@@ -161,7 +168,13 @@ export async function getServerSideProps({ req }) {
       fetch(`${baseUrl}/api/blog/posts`)
     ]);
 
-    const data = await portfolioRes.json();
+    let data = null;
+    try {
+      data = await portfolioRes.json();
+    } catch (e) {
+      console.error("Portfolio API did not return JSON");
+    }
+    
     const postsData = await postsRes.json();
 
     // Return data if it exists

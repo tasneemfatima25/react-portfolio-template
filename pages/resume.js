@@ -8,15 +8,34 @@ import Button from "../components/Button";
 import { useTheme } from "next-themes";
 
 const Resume = ({ data }) => {
+
+  const DEFAULT_DATA = {
+    name: "",
+    showResume: false,
+    showCursor: false,
+    resume: {
+      tagline: "",
+      description: "",
+      experiences: [],
+      education: {},
+      languages: [],
+      frameworks: [],
+      others: [],
+    },
+  };
+
+  const safeData = data || DEFAULT_DATA;
+
+
   const router = useRouter();
   const theme = useTheme();
   const [mount, setMount] = useState(false);
 
   useEffect(() => {
     setMount(true);
-    if (data && !data.showResume) {
-      router.push("/");
-    }
+  if (data && data.showResume === false) {
+  router.push("/");
+}
   }, [data, router]);
 
   // Handle missing data
@@ -24,7 +43,7 @@ const Resume = ({ data }) => {
     // return <div>Loading...</div>;
   }
 
-  const { name, showResume, resume } = data;
+  const { name, showResume, resume } = safeData;
   return (
     <>
       {/* {process.env.NODE_ENV === "development" && ( */}
@@ -52,10 +71,12 @@ const Resume = ({ data }) => {
 </button>
         </div>
       {/* )} */}
-      {data.showCursor && <Cursor />}
+      {safeData.showCursor && <Cursor />}
+
       <div
         className={`container mx-auto mb-10 ${
-          data.showCursor && "cursor-none"
+          safeData.showCursor ? "cursor-none" : ""
+
         }`}
       >
         <Header isBlog />
@@ -161,7 +182,13 @@ export async function getServerSideProps({ req }) {
     const baseUrl = `${protocol}://${req.headers.host}`;
 
     const res = await fetch(`${baseUrl}/api/portfolio`);
-    const data = await res.json();
+    let data = null;
+    try {
+      data = await res.json();
+    } catch {
+      console.error("Portfolio API did not return JSON");
+    }
+    
 
     // Return data if it exists
     if (data) {
