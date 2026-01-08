@@ -262,16 +262,22 @@ export async function getServerSideProps({ req }) {
     const baseUrl = `${protocol}://${req.headers.host}`;
 
     const res = await fetch(`${baseUrl}/api/portfolio`);
-    const data = await res.json();
+
+    let data = null;
+
+    try {
+      data = await res.json();
+    } catch (e) {
+      console.error("API did not return JSON");
+    }
 
     return {
       props: {
-        data: data || null,
+        data,
       },
     };
   } catch (error) {
-    console.error("Error in getServerSideProps:", error);
-
+    console.error("SSR failed:", error);
     return {
       props: {
         data: null,
@@ -279,5 +285,3 @@ export async function getServerSideProps({ req }) {
     };
   }
 }
-
-
