@@ -13,6 +13,7 @@ const DEFAULT_DATA = {
   showCursor: false,
 };
 const Blog = ({ posts: initialPosts, data }) => {
+  const safeData = data || DEFAULT_DATA;
   const [posts, setPosts] = useState(initialPosts);
   const text = useRef();
   const router = useRouter();
@@ -34,7 +35,7 @@ const Blog = ({ posts: initialPosts, data }) => {
     } catch (error) {
       console.error("Animation error:", error);
     }
-  }, [router, safeData]);
+  }, [router, safeData.showBlog]);
   
 
   useEffect(() => {
@@ -86,7 +87,7 @@ const Blog = ({ posts: initialPosts, data }) => {
   // }
 
   return (
-    data?.showBlog && (
+    safeData?.showBlog && (
       <>
         {safeData?.showCursor && <Cursor />}
         <Head>
