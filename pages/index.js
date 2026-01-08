@@ -78,7 +78,7 @@ export default function Home({ data: initialData }) {
     }
   }, []);
 
-  if (!data) return <div className="text-center mt-20">Loading...</div>;
+  // if (!data) return <div className="text-center mt-20">Loading...</div>;
 
   return (
     <div className={`relative ${data.showCursor && "cursor-none"}`}>

@@ -21,7 +21,7 @@ const Resume = ({ data }) => {
 
   // Handle missing data
   if (!data) {
-    return <div>Loading...</div>;
+    // return <div>Loading...</div>;
   }
 
   const { name, showResume, resume } = data;
