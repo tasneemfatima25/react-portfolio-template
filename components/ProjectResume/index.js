@@ -13,7 +13,7 @@ const ProjectResume = ({ dates, type, position, bullets }) => {
         <h2 className="text-lg font-bold">{position}</h2>
         {bulletsLocal && bulletsLocal.length > 0 && (
           <ul className="list-disc">
-            {bulletsLocal.map((bullet, index) => (
+            {bulletsLocal?.map((bullet, index) => (
               <li key={index} className="text-sm my-1 opacity-70">
                 {bullet}
               </li>

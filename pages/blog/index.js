@@ -103,7 +103,7 @@ const Blog = ({ posts: initialPosts, data }) => {
             </h1>
             <div className="mt-10 grid grid-cols-1 mob:grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 justify-between gap-10">
               {posts &&
-                posts.map((post) => (
+                posts?.map((post) => (
                   <div
                     className="cursor-pointer relative"
                     key={post.slug}

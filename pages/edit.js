@@ -424,7 +424,7 @@ const Edit = () => {
         {currentTabs === "PROJECTS" && (
           <>
             <div className="mt-10">
-              {data.projects.map((project, index) => (
+              {data?.projects?.map((project, index) => (
                 <div className="mt-10" key={project.id}>
                   <div className="flex items-center justify-between">
                     <h1 className="text-2xl">{project.title}</h1>
@@ -514,7 +514,7 @@ const Edit = () => {
         {currentTabs === "SERVICES" && (
           <>
             <div className="mt-10">
-              {data.services.map((service, index) => (
+              {data?.services?.map((service, index) => (
                 <div key={service.id}>
                   <div className="flex items-center justify-between">
                     <h1 className="text-2xl">{service.title}</h1>
@@ -579,7 +579,7 @@ const Edit = () => {
         )}
         {currentTabs === "SOCIAL" && (
           <div className="mt-10">
-            {data.socials.map((social, index) => (
+            {data?.socials?.map((social, index) => (
               <>
                 <div key={social.id}>
                   <div className="flex items-center justify-between">
@@ -666,7 +666,7 @@ const Edit = () => {
 
             <h1>Experiences</h1>
             <div className="mt-10">
-              {data.resume.experiences.map((experiences, index) => (
+              {data?.resume?.experiences?.map((experiences, index) => (
                 <div className="mt-5" key={experiences.id}>
                   <div className="flex items-center justify-between">
                     <h1 className="text-2xl">{experiences.position}</h1>
@@ -816,7 +816,7 @@ const Edit = () => {
               <div className="flex">
                 <label className="w-1/5 text-lg opacity-50">Languages</label>
                 <div className="w-4/5 ml-10 flex flex-col">
-                  {data.resume.languages.map((language, index) => (
+                  {data?.resume?.languages?.map((language, index) => (
                     <div key={index} className="flex">
                       <input
                         value={language}
@@ -878,7 +878,7 @@ const Edit = () => {
               <div className="flex">
                 <label className="w-1/5 text-lg opacity-50">Frameworks</label>
                 <div className="w-4/5 ml-10 flex flex-col">
-                  {data.resume.frameworks.map((framework, index) => (
+                  {data?.resume?.frameworks?.map((framework, index) => (
                     <div key={index} className="flex">
                       <input
                         value={framework}
@@ -940,7 +940,7 @@ const Edit = () => {
               <div className="flex">
                 <label className="w-1/5 text-lg opacity-50">Others</label>
                 <div className="w-4/5 ml-10 flex flex-col">
-                  {data.resume.others.map((other, index) => (
+                  {data?.resume?.others?.map((other, index) => (
                     <div key={index} className="flex">
                       <input
                         value={other}

@@ -173,7 +173,7 @@ export default function Home({ data: initialData }) {
           <h2 className="section-title">Work</h2>
 
           <div className="mt-8 grid grid-cols-1 tablet:grid-cols-2 laptop:grid-cols-3 gap-10">
-            {data.projects.map((project) => (
+            {data?.projects?.map((project) => (
               <div key={project.id} className="glass hover-lift">
                 <WorkCard
                   img={project.imageSrc}
@@ -191,7 +191,7 @@ export default function Home({ data: initialData }) {
           <h2 className="section-title">Services</h2>
 
           <div className="mt-10 grid grid-cols-1 laptop:grid-cols-2 gap-6">
-            {data.services.map((service, index) => (
+            {data?.services?.map((service, index) => (
               <div key={index} className="glass hover-lift">
                 <ServiceCard
                   name={service.title}
